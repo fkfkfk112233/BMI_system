@@ -1,0 +1,171 @@
+		/****************************event*****************************/	
+		//計算
+		JButton okButton = new JButton("計算");
+		okButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				BMI_controller controller = new BMI_controller();
+				String name = nameField.getText();
+				String gender = (String) genderbox.getSelectedItem();
+				double height = Double.parseDouble(heightField.getText());
+				double weight = Double.parseDouble(weightField.getText());
+				double bmi = controller.calcBMI(height, weight);
+				DecimalFormat df = new DecimalFormat("0.00");
+				String bmiText = df.format(bmi);
+				String result = controller.getResult(bmi);
+				String today = LocalDate.now().toString();
+				
+				out.setText(
+					    "姓名：" + name + "\t性別：" + gender +
+					    "\n身高：" + height + "\t體重：" + weight +
+					    "\nBMI：" + bmiText + "\t結果：" + result +
+					    "\n-------------------------------------" +
+					    "\n建立時間：" + today
+				);
+			}
+		});
+		okButton.setFont(new Font("新細明體", Font.PLAIN, 14));
+		okButton.setBounds(456, 94, 84, 22);
+		panel.add(okButton);
+		
+		//清除
+		JButton clearButton = new JButton("清除");
+		clearButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				nameField.setText("");
+				heightField.setText("");
+				weightField.setText("");
+				out.setText("");
+			}
+		});
+		clearButton.setFont(new Font("新細明體", Font.PLAIN, 14));
+		clearButton.setBounds(362, 94, 84, 22);
+		panel.add(clearButton);
+		
+		//列印
+		JButton ppButton = new JButton("列印");
+		ppButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					out.print();
+				} catch (PrinterException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		ppButton.setFont(new Font("新細明體", Font.PLAIN, 14));
+		ppButton.setBounds(365, 98, 84, 22);
+		panel_1.add(ppButton);
+		
+		//離開
+		JButton exitButton = new JButton("離開");
+		exitButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(0);
+			}
+		});
+		exitButton.setFont(new Font("新細明體", Font.PLAIN, 14));
+		exitButton.setBounds(456, 98, 84, 22);
+		panel_1.add(exitButton);
+		
+		//時間
+		JLabel time = new JLabel("");
+		time.setFont(new Font("新細明體", Font.BOLD, 14));
+		time.setBounds(366, 55, 200, 20);
+		outPanel.add(time);
+		
+		DateTimeFormatter now = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		Timer timer = new Timer(1000, e ->time.setText("系統時間: " + LocalDateTime.now().format(now)));
+		timer.start();
+		
+	}
+}
+
+***************************************************************************
+package com;
+
+public class BMI_model {
+    private String name;
+
+    private double height;
+
+    private double weight;
+
+    private double bmi;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public double getBMI() {
+        return bmi;
+    }
+
+    public void setBMI(double bmi) {
+        this.bmi = bmi;
+    }
+	
+
+}
+
+*******************************************************************************
+package com;
+
+public class BMI_controller {
+
+    public double calcBMI(double height, double weight) {
+
+        height = height / 100;
+
+        return weight / (height * height);
+
+    }
+    
+    public String getResult(double bmi) {
+
+        if(bmi < 18.5) {
+
+            return "過輕";
+
+        }
+        else if(bmi < 24) {
+
+            return "正常";
+
+        }
+        else if(bmi < 27) {
+
+            return "過重";
+
+        }
+        else {
+
+            return "肥胖";
+
+        }
+    }
+}
