@@ -140,6 +140,6 @@ BMI：22.49     結果：正常
 
 ## 作者
 
-GitHub：Your GitHub Name
+GitHub：fkfkfk112233
 
 Java Swing 練習專案
